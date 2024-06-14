@@ -1,0 +1,58 @@
+class Vending_machine:
+
+  def __init__(self):
+    self.items = {
+        "Coke" : 25,
+        "100Plus" : 35,
+        "Fanta" : 15,
+    }
+    self.available_notes = [1, 5, 10, 20]
+
+  def Display_items(self):
+    print("Available drinks and prices:")
+    for index, (item, price) in enumerate(self.items.items(), start = 1):
+    # for item, price in self.items.items():
+      print(f"{index}. {item} : ${price}")
+
+  def Get_least_change(self, change):
+    Change_notes = []
+    for note in sorted(self.available_notes, reverse = True):
+      while change >= note:
+        Change_notes.append(note)
+        change -= note
+    return Change_notes
+
+  def Purchase(self):
+    self.Display_items()
+
+    while True:
+      selection = int(input("Enter the index of the drinks you wish to buy: "))
+      if 1 <= selection <= len(self.items):
+        Drink = list(self.items.keys())[selection - 1]
+        break
+      else:
+        print("Invalid drink selected. Please try again")
+        # continue
+
+    Price = self.items[Drink]
+    print(f"The price of {Drink} is ${Price}")
+
+
+    amount_inserted = int(input("Please enter the amount of money: $"))
+
+    if amount_inserted < Price:
+      print("Insufficient amount. Transaction cancelled.")
+      return
+
+    change = amount_inserted - Price
+    change_notes = self.Get_least_change(change)
+
+    print(f"Dispensing {Drink}...")
+    print(f"Change to be returned: ${change}")
+    print(f"Change notes: {change_notes}")
+
+
+VM = Vending_machine()
+VM.Purchase()
+
+
